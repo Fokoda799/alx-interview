@@ -3,7 +3,10 @@
 
 
 def pascal_traingle(n):
-    """ Pascal traingle function """
+    """
+    Pascal traingle
+    function
+    """
     if n <= 0:
         return []
 
