@@ -4,9 +4,10 @@
 
 def pascal_traingle(n):
     """
-    Pascal traingle
-    function
+    Return a list of lists that reprsent a tringle
+    of n.
     """
+
     if n <= 0:
         return []
 
