@@ -4,8 +4,7 @@
 
 def pascal_traingle(n):
     """
-    Return a list of lists that reprsent a tringle
-    of n.
+    Return a list of lists that reprsent a tringle of n.
     """
 
     if n <= 0:
@@ -24,3 +23,4 @@ def pascal_traingle(n):
         traingle.append(row)
 
     return traingle
+
