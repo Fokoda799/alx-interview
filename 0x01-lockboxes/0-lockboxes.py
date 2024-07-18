@@ -16,4 +16,4 @@ def canUnlockAll(boxes):
                 if box < len(boxes) and not opened[box]:
                     stack.append(box)
 
-    return all(visited)
+    return all(opened)
