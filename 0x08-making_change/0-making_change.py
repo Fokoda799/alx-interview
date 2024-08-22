@@ -1,16 +1,29 @@
 #!/usr/bin/python3
-""" Making Change """
+"""
+Main file for testing
+"""
+
+from collections import deque
 
 
 def makeChange(coins, total):
-    """ Given a pile of coins of different values,
-    determine the fewest number of coins needed to meet a given amount total"""
+    """ Return the minimum number of coins needed to make up the total. """
     if total <= 0:
         return 0
 
-    dp = [0] + [float('inf')] * total
-    for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
+    queue = deque([(0, 0)])
+    visited = set()
 
-    return dp[total] if dp[total] != float('inf') else -1
+    while queue:
+        current, num_coins = queue.popleft()
+
+        for coin in coins:
+            next_amount = current + coin
+
+            if next_amount == total:
+                return num_coins + 1
+            if next_amount < total and next_amount not in visited:
+                visited.add(next_amount)
+                queue.append((next_amount, num_coins + 1))
+
+    return -1
