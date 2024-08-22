@@ -8,10 +8,9 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    db = [0] + [float('inf')] * total
-    for i in range(1, total + 1):
-        for coin in coins:
-            if coin <= i:
-                db[i] = min(db[i], db[i - coin] + 1)
+    dp = [0] + [float('inf')] * (total + 1)
+    for coin in coins:
+        for i in range(coin, total + 1):
+            dp[i] = min(dp[i], dp[i - coin] + 1)
 
-    return db[total] if db[total] != float('inf') else -1
+    return dp[total] if dp[total] != float('inf') else -1
