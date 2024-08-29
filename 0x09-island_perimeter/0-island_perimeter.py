@@ -5,36 +5,25 @@
 
 
 def island_perimeter(grid):
-    """ Function that returns the perimeter of the island described in grid """
-    if not grid:
-        return None
-    if not isinstance(grid, list):
-        return None
-    if not isinstance(grid[0], list):
-        return None
-    if not isinstance(grid[0][0], int):
-        return None
-    if len(grid) < 1 or len(grid) > 100:
-        return None
-    if len(grid[0]) < 1 or len(grid[0]) > 100:
-        return None
-    if 1 in grid[0] or 1 in grid[-1]:
-        return None
+    """Function that returns the perimeter of the island described in grid."""
+    if not grid or not grid[0]:
+        return 0
 
     perimeter = 0
+    rows = len(grid)
+    cols = len(grid[0])
 
-    for i in range(1, len(grid) - 1):
-        if grid[i][0] == 1 or grid[i][-1] == 1:
-            return None
-        for j in range(1, len(grid[i]) - 1):
+    for i in range(rows):
+        for j in range(cols):
             if grid[i][j] == 1:
-                if grid[i - 1][j] == 0:
+                # Check each side (up, down, left, right)
+                if i == 0 or grid[i - 1][j] == 0:  # Up
                     perimeter += 1
-                if grid[i][j + 1] == 0:
+                if i == rows - 1 or grid[i + 1][j] == 0:  # Down
                     perimeter += 1
-                if grid[i][j - 1] == 0:
+                if j == 0 or grid[i][j - 1] == 0:  # Left
                     perimeter += 1
-                if grid[i + 1][j] == 0:
+                if j == cols - 1 or grid[i][j + 1] == 0:  # Right
                     perimeter += 1
 
     return perimeter
