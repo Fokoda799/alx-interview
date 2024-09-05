@@ -3,53 +3,41 @@
 
 
 def isWinner(x, nums):
-    """ Return th weinner """
-    def sieve(n):
-        """Returns a list of primes up to n using the Sieve of Eratosthenes."""
-        is_prime = [True] * (n + 1)
-        is_prime[0] = is_prime[1] = False
-        for p in range(2, int(n ** 0.5) + 1):
-            if is_prime[p]:
-                for i in range(p * p, n + 1, p):
-                    is_prime[i] = False
-        return [i for i, prime in enumerate(is_prime) if prime]
+    """ Return the winner """
+    if x == 0 or not nums:
+        return None
 
-    # Variables to count wins
+    max_num = max(nums)
+
+    primes = [True] * (max_num + 1)
+    primes[0] = primes[1] = False
+    for i in range(2, int(max_num ** 0.5) + 1):
+        if primes[i]:
+            for j in range(i * i, max_num + 1, i):
+                primes[j] = False
+
+    prime_count = [0] * (max_num + 1)
+    for i in range(1, max_num + 1):
+        prime_count[i] = prime_count[i - 1] + (1 if primes[i] else 0)
+
     maria_wins = 0
     ben_wins = 0
 
-    for N in nums:
-        primes = sieve(N)
-        turn = 'Maria'
+    for n in nums:
+        # Check the number of primes that can be removed up to n
+        primes_removed = prime_count[n]
 
-        # Game simulation: keep removing prime multiples until no more moves
-        remaining_numbers = set(range(1, N + 1))
-        while primes:
-            # Find the smallest prime
-            smallest_prime = primes.pop(0)
-            # Remove all multiples of this prime
-            multi = {i for i in remaining_numbers if i % smallest_prime == 0}
-            if multi:
-                remaining_numbers -= multi
-            else:
-                break
-
-            # Switch turn
-            if turn == 'Maria':
-                turn = 'Ben'
-            else:
-                turn = 'Maria'
-
-        # If Maria made the last valid move, she wins, otherwise Ben wins
-        if turn == 'Ben':
+        # If the number of primes removed is odd, Maria wins (she goes first)
+        # If even, Ben wins
+        if primes_removed % 2 == 1:
             maria_wins += 1
         else:
             ben_wins += 1
 
-    # Determine the overall winner
+    # Step 3: Determine the overall winner
     if maria_wins > ben_wins:
         return 'Maria'
     elif ben_wins > maria_wins:
         return 'Ben'
     else:
-        return None  # It's a tie
+        return None
