@@ -2,46 +2,51 @@
 """Prime Game"""
 
 
+def sieve_of_eratosthenes(limit):
+    """Generates a list of primes up to the limit
+    using the Sieve of Eratosthenes."""
+    is_prime = [True] * (limit + 1)
+    p = 2
+    while (p * p <= limit):
+        if (is_prime[p] is True):
+            for i in range(p * p, limit + 1, p):
+                is_prime[i] = False
+        p += 1
+    return [p for p in range(2, limit + 1) if is_prime[p]]
+
+
+def count_primes_up_to(n, primes):
+    """Counts the number of primes up to n."""
+    count = 0
+    for prime in primes:
+        if prime > n:
+            break
+        count += 1
+    return count
+
+
 def isWinner(x, nums):
-    """ Return the winner """
-    if x == 0 or not nums:
+    """ Return the Winner """
+    if not nums or x < 1:
         return None
 
-    max_num = max(nums)
+    max_n = max(nums)
+    primes = sieve_of_eratosthenes(max_n)
 
-    primes = [True] * (max_num + 1)
-    primes[0] = primes[1] = False
-    for i in range(2, int(max_num ** 0.5) + 1):
-        if primes[i]:
-            for j in range(i * i, max_num + 1, i):
-                primes[j] = False
+    players = {'Maria': 0, 'Ben': 0}
 
-    prime_count = [0] * (max_num + 1)
-    for i in range(1, max_num + 1):
-        prime_count[i] = prime_count[i - 1] + (1 if primes[i] else 0)
+    for num in nums:
+        prime_count = count_primes_up_to(num, primes)
 
-    maria_wins = 0
-    ben_wins = 0
-
-    for n in nums:
-        if n == 1:
-            ben_wins += 1
-            continue
-
-        # Check the number of primes that can be removed up to n
-        primes_removed = prime_count[n]
-
-        # If the number of primes removed is odd, Maria wins (she goes first)
-        # If even, Ben wins
-        if primes_removed % 2 == 1:
-            maria_wins += 1
+        # Determine the winner based on the count of primes
+        if prime_count % 2 == 0:
+            players['Ben'] += 1
         else:
-            ben_wins += 1
+            players['Maria'] += 1
 
-    # Step 3: Determine the overall winner
-    if maria_wins > ben_wins:
+    if players['Maria'] > players['Ben']:
         return 'Maria'
-    elif ben_wins > maria_wins:
+    elif players['Ben'] > players['Maria']:
         return 'Ben'
     else:
         return None
