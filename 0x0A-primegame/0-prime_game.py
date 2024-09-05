@@ -24,6 +24,10 @@ def isWinner(x, nums):
     ben_wins = 0
 
     for n in nums:
+        if n == 1:
+            ben_wins += 1
+            continue
+
         # Check the number of primes that can be removed up to n
         primes_removed = prime_count[n]
 
